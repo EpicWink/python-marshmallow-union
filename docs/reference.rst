@@ -1,8 +1,9 @@
-marshmallow\_union package
-==========================
+=========
+Reference
+=========
 
-Module contents
----------------
+marshmallow\_union
+------------------
 
 .. automodule:: marshmallow_union
    :members:

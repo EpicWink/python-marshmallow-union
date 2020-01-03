@@ -49,9 +49,9 @@ To set up `python-marshmallow-union` for local development:
 
    Now you can make your changes locally.
 
-4. When you're done making changes, run all the checks, doc builder and spell checker with `tox <http://tox.readthedocs.io/en/latest/install.html>`_ one command::
+4. When you're done making changes, run all the tests with ``pytest``::
 
-    tox
+    pytest -vvra --cov=marshmallow_union
 
 5. Commit your changes and push your branch to GitHub::
 
@@ -68,23 +68,12 @@ If you need some code review or feedback while you're developing the code just m
 
 For merging, you should:
 
-1. Include passing tests (run ``tox``) [1]_.
+1. Include passing tests (run ``pytest``) [1]_.
 2. Update documentation when there's new API, functionality etc.
-3. Add a file in ``changelog.d/`` describing the changes. The filename should be ``{id}.{type}.rst``, where ``{id}`` is the number of the GitHub issue or pull request and ``{type}`` is one of ``breaking`` (for breaking changes), ``deprecation`` (for deprecations), or ``change`` (for non-breaking changes). For example, to add a new feature requested in GitHub issue #1234, add a file called ``changelog.d/1234.change.rst`` describing the change.
+3. Update the changelog ``CHANGELOG.rst`` describing the changes.
 4. Add yourself to ``AUTHORS.rst``.
 
 .. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
        `run the tests <https://travis-ci.org/adamboche/python-marshmallow-union/pull_requests>`_ for each change you add in the pull request.
 
        It will be slower though ...
-
-Tips
-----
-
-To run a subset of tests::
-
-    tox -e envname -- pytest -k test_myfeature
-
-To run all the test environments in *parallel* (you need to ``pip install detox``)::
-
-    detox

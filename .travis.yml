@@ -5,34 +5,27 @@ env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
-  matrix:
-    - TOXENV=check
-    - TOXENV=docs
 matrix:
   include:
     - python: '3.6'
-      env:
-        - TOXENV=py36,report,codecov
     - python: '3.7'
       dist: xenial
       sudo: required
-      env:
-        - TOXENV=py37,report,codecov
+      after_success:
+        - pip3 install -r docs/requirements.txt
+        - sphinx-build -b html docs docs/build
+        - sphinx-build -b linkcheck docs docs/build
+        - codecov
 before_install:
   - python --version
+  - pip3 --version
   - uname -a
   - lsb_release -a
 install:
-  - pip install tox
-  - virtualenv --version
-  - easy_install --version
-  - pip --version
-  - tox --version
+  - pip3 install . -r tests/requirements.txt pytest-travis-fold
+  - pip3 freeze
 script:
-  - tox -v
-after_failure:
-  - more .tox/log/* | cat
-  - more .tox/*/log/* | cat
+  - pytest -vvra --cov=marshmallow_union
 notifications:
   email:
     on_success: never

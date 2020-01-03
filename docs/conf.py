@@ -18,10 +18,6 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]
-if os.getenv("SPELLCHECK"):
-    extensions += ("sphinxcontrib.spelling",)
-    spelling_show_suggestions = True
-    spelling_lang = "en_US"
 
 source_suffix = ".rst"
 master_doc = "index"

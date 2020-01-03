@@ -1,56 +1,30 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import print_function
 
-import io
 import re
-import sys
-from glob import glob
-from os.path import basename
-from os.path import dirname
-from os.path import join
-from os.path import splitext
+import pathlib
 
-from setuptools import find_packages
 from setuptools import setup
 
-
-def read(*names, **kwargs):
-    with io.open(
-        join(dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
-    ) as fh:
-        return fh.read()
-
-
-try:
-    with open("requirements.in") as f:
-        INSTALL_REQUIRES = f.read().splitlines()
-except FileNotFoundError:
-    print(sys.exc_info())
-    INSTALL_REQUIRES = []
+_parent = pathlib.Path(__file__).parent
+_readme = (_parent / "README.rst").read_text().strip()
+_readme = re.sub("^.. start-badges.*^.. end-badges", "", _readme, re.M | re.S)
+_changes = (_parent / "CHANGELOG.rst").read_text().strip()
+_changes = re.sub(":[a-z]+:`~?(.*?)`", r"``\1``", _changes)
 
 setup(
     name="marshmallow-union",
     version="0.1.13",
     description="Union fields for marshmallow.",
-    long_description="%s\n%s"
-    % (
-        re.compile("^.. start-badges.*^.. end-badges", re.M | re.S).sub(
-            "", read("README.rst")
-        ),
-        re.sub(":[a-z]+:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst")),
-    ),
+    license="MIT",
+    long_description=_readme + "\n" + _changes,
+    long_description_content_type="text/rst",
     author="Adam Boche",
     author_email="adamboche@users.noreply.github.com",
     url="https://github.com/adamboche/python-marshmallow-union",
-    packages=find_packages("src"),
     package_dir={"": "src"},
-    py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
-    include_package_data=True,
-    zip_safe=False,
+    py_modules=["marshmallow_union"],
     classifiers=[
-        # complete classifier list: http://pypi.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
@@ -63,21 +37,9 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
-        # uncomment if you test on these interpreters:
-        # 'Programming Language :: Python :: Implementation :: IronPython',
-        # 'Programming Language :: Python :: Implementation :: Jython',
-        # 'Programming Language :: Python :: Implementation :: Stackless',
         "Topic :: Utilities",
     ],
-    keywords=[
-        # eg: 'keyword1', 'keyword2', 'keyword3',
+    install_requires=[
+        "marshmallow~=3.0",
     ],
-    install_requires=INSTALL_REQUIRES
-    # eg: 'aspectlib==1.1.1', 'six>=1.7',
-    ,
-    extras_require={
-        # eg:
-        #   'rst': ['docutils>=0.11'],
-        #   ':python_version=="2.6"': ['argparse'],
-    },
 )

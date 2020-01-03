@@ -61,6 +61,12 @@ Union fields for marshmallow.
 * Free software: MIT license
 
 
+To run the all tests run::
+
+    pip install -r tests/requirements.txt
+    pytest
+
+
 Warning
 ===========
 
